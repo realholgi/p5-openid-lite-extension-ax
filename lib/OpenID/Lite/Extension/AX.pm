@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base 'Exporter';
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 our @EXPORT_OK = qw(
                        AX_NS
                        AX_NS_ALIAS
@@ -43,7 +43,7 @@ RP side
         $your_app->redirect_to( $checkid_req->redirect_url( ... ) );
     }
 
-OP side (!!NOT TESTED!!)
+OP side
 
     my $res = $op->handle_request( $your_app->request );
 
@@ -52,8 +52,10 @@ OP side (!!NOT TESTED!!)
         my %option;
         my $ax_req = OpenID::Lite::Extension::AX::Request->from_provider_response($res);
         if ($ax_req) {
-            if ($ax_req->mode eq 'fetch_request') {
-                ...
+            if ($ax_req->mode eq 'fetch_response') {
+                my $data = $ax_res->data;
+		my $firstname = $data->{firstname};
+		my $lastname  = $data->{lastname};
             }
         }
         $your_app->render( %option );
